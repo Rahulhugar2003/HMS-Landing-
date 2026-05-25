@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,6 +20,7 @@
  */
 
 @theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -34,6 +36,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-glow: var(--primary-glow);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -62,26 +66,36 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.875rem;
+  /* HMS palette: Primary #0EA5E9, Secondary #FFFFFF, Tertiary #F0FDFA, Neutral #64748B */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.22 0.04 240);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.22 0.04 240);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.22 0.04 240);
+  --primary: oklch(0.72 0.15 230);
+  --primary-foreground: oklch(1 0 0);
+  --primary-glow: oklch(0.82 0.13 220);
+  --primary-deep: oklch(0.55 0.16 235);
+  --secondary: oklch(0.985 0.025 180);
+  --secondary-foreground: oklch(0.30 0.05 230);
+  --muted: oklch(0.97 0.012 230);
+  --muted-foreground: oklch(0.55 0.03 240);
+  --accent: oklch(0.985 0.025 180);
+  --accent-foreground: oklch(0.30 0.05 230);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.93 0.012 230);
+  --input: oklch(0.93 0.012 230);
+  --ring: oklch(0.72 0.15 230);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.15 230), oklch(0.82 0.13 200));
+  --gradient-hero: radial-gradient(1200px 600px at 10% 0%, oklch(0.95 0.04 200 / 0.7), transparent 60%), radial-gradient(900px 500px at 90% 20%, oklch(0.92 0.06 180 / 0.6), transparent 60%);
+  --gradient-cta: linear-gradient(120deg, oklch(0.55 0.16 235), oklch(0.72 0.15 230) 50%, oklch(0.82 0.13 200));
+  --shadow-soft: 0 4px 16px -4px oklch(0.55 0.16 235 / 0.10);
+  --shadow-elegant: 0 20px 50px -20px oklch(0.55 0.16 235 / 0.25);
+  --shadow-glow: 0 0 40px oklch(0.82 0.13 200 / 0.35);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +154,32 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
+}
+
+@layer utilities {
+  .bg-gradient-primary { background-image: var(--gradient-primary); }
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .bg-gradient-cta { background-image: var(--gradient-cta); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .glass {
+    background: color-mix(in oklab, white 70%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid color-mix(in oklab, white 60%, transparent);
+  }
+  .text-gradient {
+    background: var(--gradient-cta);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  @keyframes float-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .animate-float { animation: float-slow 7s ease-in-out infinite; }
+  @keyframes fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .animate-fade-up { animation: fade-up .7s ease-out both; }
 }
